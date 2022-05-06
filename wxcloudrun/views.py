@@ -5,8 +5,7 @@ from wxcloudrun.dao import delete_counterbyid, query_counterbyid, insert_counter
 from wxcloudrun.model import Counters
 from wxcloudrun.response import make_succ_empty_response, make_succ_response, make_err_response
 
-# from WindPy import w
-# w.start();
+
 
 import tushare as ts 
 token='6f367740359ff6c86432dee3e3b8f8d09843c553adbc6f05c51f17aa'
