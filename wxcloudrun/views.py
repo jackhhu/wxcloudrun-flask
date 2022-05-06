@@ -5,14 +5,27 @@ from wxcloudrun.dao import delete_counterbyid, query_counterbyid, insert_counter
 from wxcloudrun.model import Counters
 from wxcloudrun.response import make_succ_empty_response, make_succ_response, make_err_response
 
+from WindPy import w
+w.start();
+
+ 
+
+
+
+
+
+
 
 @app.route('/')
 def index():
     """
     :return: 返回index页面
     """
+    missions = ['HC.SHF','RB.SHF']
+    _,data_df1 = w.wss(missions, "open,high,low,close,MA","tradeDate=20220505;priceAdj=U;cycle=D;MA_N=5",usedf=True)
+    data_df2 = data_df1.to_json()
 #     return render_template('index.html')
-    return ('Hello')
+    return data_df2
 
 @app.route('/api/count', methods=['POST'])
 def count():
