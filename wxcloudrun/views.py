@@ -5,11 +5,13 @@ from wxcloudrun.dao import delete_counterbyid, query_counterbyid, insert_counter
 from wxcloudrun.model import Counters
 from wxcloudrun.response import make_succ_empty_response, make_succ_response, make_err_response
 
-from WindPy import w
-w.start();
+# from WindPy import w
+# w.start();
 
- 
-
+import tushare as ts 
+token='6f367740359ff6c86432dee3e3b8f8d09843c553adbc6f05c51f17aa'
+ts.set_token(token)
+pro=ts.pro_api(token)
 
 
 
@@ -22,7 +24,9 @@ def index():
     :return: 返回index页面
     """
     missions = ['HC.SHF','RB.SHF']
-    _,data_df1 = w.wss(missions, "open,high,low,close,MA","tradeDate=20220505;priceAdj=U;cycle=D;MA_N=5",usedf=True)
+#     _,data_df1 = w.wss(missions, "open,high,low,close,MA","tradeDate=20220505;priceAdj=U;cycle=D;MA_N=5",usedf=True)
+    data_df1 = pro.daily(ts_code='300002.SZ', start_date='20200701', end_date='20201218')
+
     data_df2 = data_df1.to_json()
 #     return render_template('index.html')
     return data_df2
