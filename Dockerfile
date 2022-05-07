@@ -23,6 +23,7 @@ COPY . /app
 # 设定当前的工作目录
 WORKDIR /app
 
+RUN pip install numpy
 # 安装依赖到指定的/install文件夹
 # 选用国内镜像源以提高下载速度
 RUN pip config set global.index-url http://mirrors.cloud.tencent.com/pypi/simple \
