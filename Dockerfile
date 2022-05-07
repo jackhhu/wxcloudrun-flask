@@ -41,7 +41,7 @@ RUN pip config set global.index-url http://mirrors.cloud.tencent.com/pypi/simple
 RUN pip config set global.trusted-host mirrors.cloud.tencent.com 
 RUN pip install --upgrade pip 
 RUN apk add py3-numpy
-RUN pip install tushare
+RUN pip add py3-tushare
 # pip install scipy 等数学包失败，可使用 apk add py3-scipy 进行， 参考安装 https://pkgs.alpinelinux.org/packages?name=py3-scipy&branch=v3.13
 RUN pip install --user -r requirements.txt
 # RUN pip install numpy
