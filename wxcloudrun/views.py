@@ -41,6 +41,8 @@ def index():
     
     chromedriver_autoinstaller.install()
     
+    driver = webdriver.Chrome()
+    
     urls =[
            # 'https://finance.sina.com.cn/futures/quotes/RB2210.shtml',
            # 'https://finance.sina.com.cn/futures/quotes/HC2210.shtml',
