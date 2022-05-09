@@ -59,8 +59,8 @@ RUN apk add --no-cache python3-dev
 RUN apk add --no-cache libffi-dev
 RUN pip install cffi 
 RUN pip install selenium
-RUN pip install chrome
 
+RUN apk add chrome
 RUN pip install requests
 RUN pip install chromedriver_autoinstaller
 RUN pip install --user -r requirements.txt
