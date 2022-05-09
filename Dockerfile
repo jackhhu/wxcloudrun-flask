@@ -33,7 +33,7 @@ RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.tencent.com/g' /etc/apk/repositorie
 
 # Install Chrome
 RUN wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-RUN apk add -i google-chrome-stable_current_amd64.deb
+RUN dpkg  -i google-chrome-stable_current_amd64.deb
 RUN apk add -get -fy install
 
 # RUN wget "https://chromedriver.storage.googleapis.com/2.36/chromedriver_linux64.zip" &&\
