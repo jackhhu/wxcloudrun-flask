@@ -44,7 +44,7 @@ RUN apk add py3-numpy
 RUN apk add py3-pandas
 # RUN pip install --reinstall gcc
 # RUN pip install cffi 
-RUN pip install chrome
+# RUN pip install chrome
 
 RUN pip install tushare
 RUN pip install requests
