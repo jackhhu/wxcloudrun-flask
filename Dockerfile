@@ -48,7 +48,7 @@ RUN apk add py3-pandas
 
 RUN pip install tushare
 RUN pip install requests
-RUN pip install os
+# RUN pip install os
 # RUN apk add py3-selenium
 RUN pip install chromedriver_autoinstaller
 RUN apk add gcc 
