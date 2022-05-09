@@ -55,6 +55,7 @@ RUN pip install requests
 # RUN apk add py3-selenium
 RUN pip install chromedriver_autoinstaller
 RUN apk add gcc 
+RUN install --upgrade gcc 
 RUN apk add --no-cache -U libc-dev 
 # RUN apk add python-devel
 RUN pip install cffi 
