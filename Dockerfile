@@ -42,8 +42,8 @@ RUN pip config set global.trusted-host mirrors.cloud.tencent.com
 RUN pip install --upgrade pip 
 RUN apk add py3-numpy
 RUN apk add py3-pandas
-RUN pip install cffi 
 RUN pip install gcc 
+RUN pip install cffi 
 RUN pip install selenium 
 RUN pip install tushare
 RUN pip install requests
