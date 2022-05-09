@@ -54,7 +54,7 @@ RUN pip install requests
 # RUN pip install os
 # RUN apk add py3-selenium
 RUN pip install chromedriver_autoinstaller
-RUN apk add py3-gcc 
+RUN apk add gcc 
 # RUN apk add cffi 
 # RUN apk add selenium 
 
