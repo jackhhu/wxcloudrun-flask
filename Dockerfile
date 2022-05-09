@@ -56,6 +56,7 @@ RUN pip install tushare
 
 RUN apk add --no-cache gcc musl-dev
 RUN apk add --no-cache python3-dev
+RUN apk add --no-cache libffi-dev
 RUN pip install cffi 
 
 
