@@ -7,6 +7,9 @@ FROM alpine:3.13
 # 容器默认时区为UTC，如需使用上海时间请启用以下时区设置命令
 # RUN apk add tzdata && cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && echo Asia/Shanghai > /etc/timezone
 
+RUN apk add gcc
+RUN apk add cffi
+
 # 使用 HTTPS 协议访问容器云调用证书安装
 RUN apk add ca-certificates
 
@@ -51,7 +54,7 @@ RUN pip install requests
 # RUN pip install os
 # RUN apk add py3-selenium
 RUN pip install chromedriver_autoinstaller
-RUN apk add gcc 
+# RUN apk add gcc 
 # RUN apk add cffi
 RUN pip install selenium 
 
