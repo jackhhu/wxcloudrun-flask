@@ -25,8 +25,7 @@ COPY . /app
 # 设定当前的工作目录
 WORKDIR /app
 
-RUN apk add gcc
-RUN apk add cffi
+
 
 # # 安装依赖到指定的/install文件夹
 # # 选用国内镜像源以提高下载速度
@@ -55,8 +54,8 @@ RUN pip install requests
 # RUN pip install os
 # RUN apk add py3-selenium
 RUN pip install chromedriver_autoinstaller
-# RUN apk add gcc 
-# RUN apk add cffi
+RUN apk add gcc 
+RUN pip install cffi
 RUN pip install selenium 
 
 # pip install scipy 等数学包失败，可使用 apk add py3-scipy 进行， 参考安装 https://pkgs.alpinelinux.org/packages?name=py3-scipy&branch=v3.13
