@@ -18,7 +18,7 @@ RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.tencent.com/g' /etc/apk/repositorie
 # 安装python3
 && apk add --update --no-cache python3 py3-pip \
 && rm -rf /var/cache/apk/*
-
+RUN apk add --no-cache chrome
 # 拷贝当前项目到/app目录下
 COPY . /app
 
@@ -47,7 +47,7 @@ RUN apk add py3-numpy
 RUN apk add py3-pandas
 # RUN pip install --reinstall gcc
 # RUN pip install cffi 
-RUN apk add --no-cache chrome
+
 
 RUN pip install tushare
 
