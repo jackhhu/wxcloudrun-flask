@@ -55,7 +55,7 @@ RUN pip install requests
 # RUN apk add py3-selenium
 RUN pip install chromedriver_autoinstaller
 
-FROM python:alpine3.6
+# FROM python:alpine3.6
 RUN pip install selenium
 
 # RUN apk add gcc 
