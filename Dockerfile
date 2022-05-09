@@ -17,7 +17,6 @@ RUN apk add ca-certificates
 RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.tencent.com/g' /etc/apk/repositories \
 # 安装python3
 && apk add --update --no-cache python3 py3-pip \
-&& apk add chrome \
 && rm -rf /var/cache/apk/*
 
 # 拷贝当前项目到/app目录下
@@ -48,7 +47,7 @@ RUN apk add py3-numpy
 RUN apk add py3-pandas
 # RUN pip install --reinstall gcc
 # RUN pip install cffi 
-# RUN pip install chrome
+RUN apk add --no-cache chrome
 
 RUN pip install tushare
 
@@ -61,7 +60,7 @@ RUN apk add --no-cache libffi-dev
 RUN pip install cffi 
 RUN pip install selenium
 
-# RUN apk add chrome
+
 RUN pip install requests
 RUN pip install chromedriver_autoinstaller
 RUN pip install --user -r requirements.txt
