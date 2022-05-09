@@ -7,74 +7,74 @@ from wxcloudrun.response import make_succ_empty_response, make_succ_response, ma
 
 
 
-import tushare as ts 
-token='6f367740359ff6c86432dee3e3b8f8d09843c553adbc6f05c51f17aa'
-ts.set_token(token)
-pro=ts.pro_api(token)
+# import tushare as ts 
+# token='6f367740359ff6c86432dee3e3b8f8d09843c553adbc6f05c51f17aa'
+# ts.set_token(token)
+# pro=ts.pro_api(token)
 
 
-@app.route('/')
-def index():
-    """
-    :return: 返回index页面
-    """
-    missions = ['HC.SHF','RB.SHF']
-#     _,data_df1 = w.wss(missions, "open,high,low,close,MA","tradeDate=20220505;priceAdj=U;cycle=D;MA_N=5",usedf=True)
-    data_df1 = pro.daily(ts_code='300002.SZ', start_date='20200701', end_date='20201218')
-
-    data_df2 = data_df1.to_json()
-#     return render_template('index.html')
-    return data_df2
-
-
-
-# from bs4 import BeautifulSoup
-# from selenium import webdriver
-# import chromedriver_autoinstaller
-# from flask import Flask
-
-
-# @app.route("/")
+# @app.route('/')
 # def index():
+#     """
+#     :return: 返回index页面
+#     """
+#     missions = ['HC.SHF','RB.SHF']
+# #     _,data_df1 = w.wss(missions, "open,high,low,close,MA","tradeDate=20220505;priceAdj=U;cycle=D;MA_N=5",usedf=True)
+#     data_df1 = pro.daily(ts_code='300002.SZ', start_date='20200701', end_date='20201218')
+
+#     data_df2 = data_df1.to_json()
+# #     return render_template('index.html')
+#     return data_df2
+
+
+
+from bs4 import BeautifulSoup
+from selenium import webdriver
+import chromedriver_autoinstaller
+
+
+
+@app.route("/")
+def index():
 
 
     
-#     chromedriver_autoinstaller.install()
+    chromedriver_autoinstaller.install()
     
-#     urls =[
-#            # 'https://finance.sina.com.cn/futures/quotes/RB2210.shtml',
-#            # 'https://finance.sina.com.cn/futures/quotes/HC2210.shtml',
-#            # 'https://finance.sina.com.cn/futures/quotes/I2209.shtml',
-#            # 'https://finance.sina.com.cn/futures/quotes/J2209.shtml',
-#            'https://finance.sina.com.cn/futures/quotes/JM2209.shtml',        ]
-#     df2 = []
-#     for url in urls:
-#         # chromedriver  = 'C:\Program Files (x86)\Google\Chrome\Application\chromedriver'
-#         # driver = webdriver.Chrome(chromedriver)
-#         driver = webdriver.Chrome()
+    urls =[
+           # 'https://finance.sina.com.cn/futures/quotes/RB2210.shtml',
+           # 'https://finance.sina.com.cn/futures/quotes/HC2210.shtml',
+           # 'https://finance.sina.com.cn/futures/quotes/I2209.shtml',
+           # 'https://finance.sina.com.cn/futures/quotes/J2209.shtml',
+           'https://finance.sina.com.cn/futures/quotes/JM2209.shtml',        ]
+    df2 = []
+    for url in urls:
+        # chromedriver  = 'C:\Program Files (x86)\Google\Chrome\Application\chromedriver'
+        # driver = webdriver.Chrome(chromedriver)
+        driver = webdriver.Chrome()
         
-#         # driver.get("http://www.python.org")
+        # driver.get("http://www.python.org")
     
-#         headers = {'X-Requested-With': 'XMLHttpRequest','User-Agent':'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36'}
+        headers = {'X-Requested-With': 'XMLHttpRequest','User-Agent':'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36'}
     
-#         driver.get(url)
-#         # time.sleep(1) #这是为了让网页能够完全加载出来
-#         res = driver.page_source
-#         driver.close()
-#         soup = BeautifulSoup(res, "html.parser")
-#         news = soup.find_all('td',attrs = {"rowspan":"3"})
-#         df1 = []
+        driver.get(url)
+        # time.sleep(1) #这是为了让网页能够完全加载出来
+        res = driver.page_source
+        driver.close()
+        soup = BeautifulSoup(res, "html.parser")
+        news = soup.find_all('td',attrs = {"rowspan":"3"})
+        df1 = []
         
-#         # for new in news:
-#         #     df1.append(new.text.strip().replace("\n","").replace("\r","").replace("\xa0","").replace("\t","")[0:22])         
+        # for new in news:
+        #     df1.append(new.text.strip().replace("\n","").replace("\r","").replace("\xa0","").replace("\t","")[0:22])         
         
-#         for new in news:
-#             df1.append(new.text)
+        for new in news:
+            df1.append(new.text)
         
-#         df2.append(df1[0]) 
-#         print (df2)
+        df2.append(df1[0]) 
+        print (df2)
 
-#     return df2[0]
+    return df2[0]
 
 
 
