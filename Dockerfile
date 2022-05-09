@@ -42,7 +42,7 @@ RUN pip config set global.trusted-host mirrors.cloud.tencent.com
 RUN pip install --upgrade pip 
 RUN apk add py3-numpy
 RUN apk add py3-pandas
-RUN pip install selenium -i http://pypi.douban.com/simple
+RUN pip install selenium -i http://pypi.douban.com/simple --trusted-host pypi.douban.com
 RUN pip install tushare
 RUN pip install requests
 
