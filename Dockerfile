@@ -19,12 +19,10 @@ RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.tencent.com/g' /etc/apk/repositorie
 && apk add --update --no-cache python3 py3-pip \
 && rm -rf /var/cache/apk/*
 
-RUN rm  -rf /tmp/* /var/cache/apk/* &&\
-    wget "https://github.com/mozilla/geckodriver/releases/download/v0.19.1/geckodriver-v0.19.1-linux64.tar.gz" &&\
-    tar -xvf geckodriver-v0.19.1-linux64.tar.gz &&\
-    rm -rf geckodriver-v0.19.1-linux64.tar.gz &&\
-    chmod a+x geckodriver &&\
-    mv geckodriver /usr/local/bin/
+RUN wget "https://chromedriver.storage.googleapis.com/2.36/chromedriver_linux64.zip" &&\
+    busybox unzip chromedriver_linux64.zip &&\
+    chmod a+x chromedriver &&\
+    mv chromedriver /usr/bin/
     
 # 拷贝当前项目到/app目录下
 COPY . /app
