@@ -30,16 +30,18 @@ RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.tencent.com/g' /etc/apk/repositorie
 # Install manually all the missing libraries
 # RUN apt-get update
 # RUN apt-get install -y gconf-service libasound2 libatk1.0-0 libcairo2 libcups2 libfontconfig1 libgdk-pixbuf2.0-0 libgtk-3-0 libnspr4 libpango-1.0-0 libxss1 fonts-liberation libappindicator1 libnss3 lsb-release xdg-utils default-jdk
+# -------------------
+# RUN apk update
+# RUN update-ca-certificates
+# RUN apk --no-cache add openssl wget
 
-RUN apk update
-RUN update-ca-certificates
-RUN apk --no-cache add openssl wget
 
+# # Install Chrome
+# RUN wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+# RUN dpkg  -i google-chrome-stable_current_amd64.deb
+# RUN apk add -get -fy install
+# ------------------------
 
-# Install Chrome
-RUN wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-RUN apk add  -i google-chrome-stable_current_amd64.deb
-RUN apk add -get -fy install
 
 # RUN wget "https://chromedriver.storage.googleapis.com/2.36/chromedriver_linux64.zip" &&\
 #     busybox unzip chromedriver_linux64.zip &&\
@@ -74,7 +76,7 @@ RUN apk add py3-numpy
 RUN apk add py3-pandas
 # RUN pip install --reinstall gcc
 # RUN pip install cffi 
-
+RUN apk add chromium
 
 RUN pip install tushare
 
