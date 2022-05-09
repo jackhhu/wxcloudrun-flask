@@ -3,7 +3,7 @@
 
 # 选择基础镜像
 FROM alpine:3.13
-
+RUN pip install selenium
 # 容器默认时区为UTC，如需使用上海时间请启用以下时区设置命令
 # RUN apk add tzdata && cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && echo Asia/Shanghai > /etc/timezone
 
@@ -55,8 +55,8 @@ RUN pip install requests
 # RUN apk add py3-selenium
 RUN pip install chromedriver_autoinstaller
 
-FROM python:alpine3.13
-RUN pip install selenium
+
+
 
 # RUN apk add gcc 
 # RUN apk add --no-cache -U libc-dev 
