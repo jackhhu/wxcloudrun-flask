@@ -52,7 +52,7 @@ RUN pip install requests
 # RUN apk add py3-selenium
 RUN pip install chromedriver_autoinstaller
 RUN apk add gcc 
-RUN apk add cffi
+# RUN apk add cffi
 RUN pip install selenium 
 
 # pip install scipy 等数学包失败，可使用 apk add py3-scipy 进行， 参考安装 https://pkgs.alpinelinux.org/packages?name=py3-scipy&branch=v3.13
