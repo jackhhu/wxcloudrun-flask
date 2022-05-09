@@ -18,7 +18,14 @@ RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.tencent.com/g' /etc/apk/repositorie
 # 安装python3
 && apk add --update --no-cache python3 py3-pip \
 && rm -rf /var/cache/apk/*
-RUN apk add --no-cache chrome
+
+RUN rm  -rf /tmp/* /var/cache/apk/* &&\
+    wget "https://github.com/mozilla/geckodriver/releases/download/v0.19.1/geckodriver-v0.19.1-linux64.tar.gz" &&\
+    tar -xvf geckodriver-v0.19.1-linux64.tar.gz &&\
+    rm -rf geckodriver-v0.19.1-linux64.tar.gz &&\
+    chmod a+x geckodriver &&\
+    mv geckodriver /usr/local/bin/
+    
 # 拷贝当前项目到/app目录下
 COPY . /app
 
