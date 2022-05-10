@@ -53,7 +53,7 @@ def index():
     for url in urls:
         # chromedriver  = 'C:\Program Files (x86)\Google\Chrome\Application\chromedriver'
         # driver = webdriver.Chrome(chromedriver)
-        driver = webdriver.Chrome()
+#         driver = webdriver.Chrome()
         
         # driver.get("http://www.python.org")
     
