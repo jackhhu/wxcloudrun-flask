@@ -61,7 +61,7 @@ def index():
         driver = webdriver.Chrome(chrome_options=options)
 #         driver = webdriver.Chrome()
         driver.get(url)
-        time.sleep(10) #这是为了让网页能够完全加载出来
+#         time.sleep(10) #这是为了让网页能够完全加载出来
         res = driver.page_source
         driver.close()
         soup = BeautifulSoup(res, "html.parser")
