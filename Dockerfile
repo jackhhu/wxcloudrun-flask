@@ -20,9 +20,9 @@ RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.tencent.com/g' /etc/apk/repositorie
 && rm -rf /var/cache/apk/*
 
 
-RUN apk add install -y wget
-RUN wget -q https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-RUN apk add install ./google-chrome-stable_current_amd64.de
+# RUN apk add install -y wget
+# RUN wget -q https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+# RUN apk add install ./google-chrome-stable_current_amd64.de
 
 
 # RUN wget "https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb" 
