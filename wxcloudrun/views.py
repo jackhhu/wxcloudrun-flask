@@ -58,8 +58,8 @@ def index():
         chrome_options.add_argument('no-sandbox')    
         chrome_options.add_argument('disable-dev-shm-usage')
 
-
-        driver = webdriver.Chrome()
+        driver = webdriver.Chrome(executable_path=r'/usr/bin/chromedriver.exe', chrome_options=options)
+#         driver = webdriver.Chrome()
         driver.get(url)
         time.sleep(10) #这是为了让网页能够完全加载出来
         res = driver.page_source
