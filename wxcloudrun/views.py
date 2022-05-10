@@ -70,7 +70,7 @@ def index():
         res = driver.page_source
         driver.close()
         soup = BeautifulSoup(res, "html.parser")
-        news = soup.find_all('td',attrs = {"rowspan":"3"})
+        news = soup.find_all('td',attrs = {"rowspan":"4"})
         # news = soup.find_all('span',attrs = {"style":"float:left;min-width:80px;margin-right:11px;color:#FC9CB8"})
         
         df1 = []
