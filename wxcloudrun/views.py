@@ -32,25 +32,30 @@ from bs4 import BeautifulSoup
 from selenium import webdriver
 import chromedriver_autoinstaller
 from selenium.webdriver.chrome.options import Options 
-
+import json
+import re
 
 @app.route("/")
 def index():
-
-
+    futuredata=[]
+    missions = ['HC2210','J2209']
     
     chromedriver_autoinstaller.install()
     
-#     driver = webdriver.Chrome()
     
-    urls =[
-           # 'https://finance.sina.com.cn/futures/quotes/RB2210.shtml',
-           # 'https://finance.sina.com.cn/futures/quotes/HC2210.shtml',
-           # 'https://finance.sina.com.cn/futures/quotes/I2209.shtml',
-           # 'https://finance.sina.com.cn/futures/quotes/J2209.shtml',
-           'https://finance.sina.com.cn/futures/quotes/JM2209.shtml',        ]
-    df2 = []
-    for url in urls:
+    
+    for mission in missions:
+        url = 'https://finance.sina.com.cn/futures/quotes/'+ mission +'.shtml'
+    
+    # urls =[
+    #         'https://finance.sina.com.cn/futures/quotes/RB2210.shtml',
+    #         'https://finance.sina.com.cn/futures/quotes/HC2210.shtml',
+    #        # 'https://finance.sina.com.cn/futures/quotes/I2209.shtml',
+    #        # 'https://finance.sina.com.cn/futures/quotes/J2209.shtml',
+    #        # 'https://finance.sina.com.cn/futures/quotes/JM2209.shtml',  
+    #        ]
+        
+    # for url in urls:
 
         options = webdriver.ChromeOptions()
         options.add_argument('--no-sandbox')
@@ -66,19 +71,29 @@ def index():
         driver.close()
         soup = BeautifulSoup(res, "html.parser")
         news = soup.find_all('td',attrs = {"rowspan":"3"})
-        df1 = []
+        # news = soup.find_all('span',attrs = {"style":"float:left;min-width:80px;margin-right:11px;color:#FC9CB8"})
         
+        df1 = []
+        df2 = []
+        dic={}
         # for new in news:
         #     df1.append(new.text.strip().replace("\n","").replace("\r","").replace("\xa0","").replace("\t","")[0:22])         
         
         for new in news:
             df1.append(new.text)
-        
-        df2.append(df1[0]) 
-        print (df2)
-
-    return df2[0]
-
+        try: 
+            df2.append(df1[0]) 
+            a1 = re.findall("\d+\.\d+|\-\d+\.\d", df2[0])[0]
+            a2 = re.findall("\d+\.\d+|\-\d+\.\d", df2[0])[1]
+            a3 = re.findall("\d+\.\d+|\-\d+\.\d", df2[0])[2]
+            
+            dic = dict(code=mission,price= a1,change =a2 ,pct =a3 )
+                
+            futuredata.append(dic)
+            print (futuredata)
+        except:
+            print('无数据')
+    return json.dumps(futuredata)
 
 
 
