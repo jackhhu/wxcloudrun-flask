@@ -43,10 +43,10 @@ RUN wget "https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.
 # ------------------------
 
 
-RUN wget "https://chromedriver.storage.googleapis.com/2.36/chromedriver_linux64.zip" &&\
-    busybox unzip chromedriver_linux64.zip &&\
-    chmod a+x chromedriver &&\
-    mv chromedriver /usr/bin/
+RUN wget "https://chromedriver.storage.googleapis.com/2.36/chromedriver_linux64.zip" \
+&& busybox unzip chromedriver_linux64.zip \
+&& chmod a+x chromedriver \
+&&  mv chromedriver /usr/bin/
     
 # 拷贝当前项目到/app目录下
 COPY . /app
