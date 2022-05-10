@@ -81,7 +81,7 @@ RUN apk add py3-pandas
 # RUN pip install --reinstall gcc
 # RUN pip install cffi 
 RUN apk add chromium
-
+RUN apk add chromium-chromedriver
 RUN pip install tushare
 
 # RUN pip install os
