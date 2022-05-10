@@ -21,8 +21,8 @@ RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.tencent.com/g' /etc/apk/repositorie
 
 
 
-RUN wget "https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb" \
-    && apk add  -f ./google-chrome-stable_current_amd64.deb \
+RUN wget "https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb" 
+RUN dpkg  -i google-chrome-stable_current_amd64.deb
 #     && sed -e '/chrome/ s/^#*/#/' -i /opt/google/chrome/google-chrome \
 #     && echo 'exec -a "$0" "$HERE/chrome" "$@" --user-data-dir="$HOME/.config/chrome" --no-sandbox --disable-dev-shm-usage' >> /opt/google/chrome/google-chrome
 #     && mv chrome /usr/bin/
