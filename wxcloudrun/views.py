@@ -51,14 +51,14 @@ def index():
            'https://finance.sina.com.cn/futures/quotes/JM2209.shtml',        ]
     df2 = []
     for url in urls:
-        options  = Options()    
-        options.add_argument('--headless')  # 设置Chrome为无头模式
-        
-    
-        options.add_argument('no-sandbox')    
-        options.add_argument('disable-dev-shm-usage')
 
-        driver = webdriver.Chrome(executable_path=r'/usr/bin/chromedriver.exe', chrome_options=options)
+        options = webdriver.ChromeOptions()
+        options.add_argument('--no-sandbox')
+        options.add_argument('--disable-extensions')
+        options.add_argument('--headless')
+        options.add_argument('--disable-gpu')
+
+        driver = webdriver.Chrome(chrome_options=options)
 #         driver = webdriver.Chrome()
         driver.get(url)
         time.sleep(10) #这是为了让网页能够完全加载出来
