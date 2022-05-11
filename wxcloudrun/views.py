@@ -77,36 +77,32 @@ def index():
         print (a2)   
                   
          
-        elements = driver.find_elements(By.CLASS_NAME, 'kke_menus_tab_normal') 
-        for element in elements:
-            print(element.text)
-        print('MA5',elements[3].text)
-        elements[3].click()
+#         elements = driver.find_elements(By.CLASS_NAME, 'kke_menus_tab_normal') 
+#         for element in elements:
+#             print(element.text)
+#         print('MA5',elements[3].text)
+#         elements[3].click()
         
-        time.sleep(1)
+#         time.sleep(1)
 
-        a_list = []                                    
-        elements = driver.find_elements(By.XPATH, "//span[@style='float:left;min-width:80px;margin-right:11px;color:#FC9CB8']")
-        for element in elements:
-            a_list.append(element.text)
-        a3 = re.findall("\d+\.\d+|\-\d+\.\d", a_list[0])[0]
+#         a_list = []                                    
+#         elements = driver.find_elements(By.XPATH, "//span[@style='float:left;min-width:80px;margin-right:11px;color:#FC9CB8']")
+#         for element in elements:
+#             a_list.append(element.text)
+#         a3 = re.findall("\d+\.\d+|\-\d+\.\d", a_list[0])[0]
         
-        time.sleep(1)
-        b_list = []                                    
-        elements = driver.find_elements(By.XPATH, "//span[@style='float:left;min-width:80px;margin-right:11px;color:#EE2F72']")
-        for element in elements:
-            b_list.append(element.text)
-        a4 = re.findall("\d+\.\d+|\-\d+\.\d", b_list[0])[0]
+#         time.sleep(1)
+#         b_list = []                                    
+#         elements = driver.find_elements(By.XPATH, "//span[@style='float:left;min-width:80px;margin-right:11px;color:#EE2F72']")
+#         for element in elements:
+#             b_list.append(element.text)
+#         a4 = re.findall("\d+\.\d+|\-\d+\.\d", b_list[0])[0]
             
 
-        # a_list = []                                    
-        # elements = driver.find_elements(By.XPATH, "//div[@style='margin-left: 55px;']")
-        # for element in elements:
-        #     a_list.append(element.text)
-        # a3 = re.findall("\d+\.\d+|\-\d+\.\d", a_list[0])[0]
-        # a4 = re.findall("\d+\.\d+|\-\d+\.\d", a_list[0])[2]   
  
-        dic = dict(code=mission,price= a1, pct =a2 ,ma5 =a3 ,ma20 =a4 )
+#         dic = dict(code=mission,price= a1, pct =a2 ,ma5 =a3 ,ma20 =a4 )
+    
+        dic = dict(code=mission,price= a1, pct =a2  )
             
         futuredata.append(dic)
         print (futuredata)
