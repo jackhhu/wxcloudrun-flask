@@ -28,7 +28,6 @@ from wxcloudrun.response import make_succ_empty_response, make_succ_response, ma
 
 
 
-
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 import chromedriver_autoinstaller
@@ -37,79 +36,83 @@ import re
 import json
 import time
 
-@app.route("/")
-def index():
-    futuredata=[]
-    missions = ['RB2210','HC2210','J2209','JM2209','I2209']
-    # missions = ['HC2210']
+app = Flask(__name__)
+
+futuredata=[]
+missions = ['RB2210','HC2210','J2209','JM2209','I2209']
+# missions = ['HC2210']
+
+chromedriver_autoinstaller.install()
+
+for mission in missions:
+    url = 'https://finance.sina.com.cn/futures/quotes/'+ mission +'.shtml'    
+
+
+    options = webdriver.ChromeOptions()
+    options.add_argument('--no-sandbox')
+    options.add_argument('--disable-extensions')
+    options.add_argument('--headless')
+    options.add_argument('--disable-gpu')
     
-    chromedriver_autoinstaller.install()
+    options.add_argument('--disable-dev-shm-usage')
+
+    driver = webdriver.Chrome(chrome_options=options)    
+
+
+    driver.implicitly_wait(10)
     
-    for mission in missions:
-        url = 'https://finance.sina.com.cn/futures/quotes/'+ mission +'.shtml'    
-    
+    driver.get(url)
 
-        options = webdriver.ChromeOptions()
-        options.add_argument('--no-sandbox')
-        options.add_argument('--disable-extensions')
-        options.add_argument('--headless')
-        options.add_argument('--disable-gpu')
-        
-        options.add_argument('--disable-dev-shm-usage')
-
-        driver = webdriver.Chrome(chrome_options=options)    
-    
-
-        driver.implicitly_wait(10)
-        
-        driver.get(url)
-
-                
-        elements = driver.find_elements(By.CLASS_NAME, 'real-price')
-        for element in elements:
-            print(element.text)     
-        a1 = element.text
-        print (a1)
-        elements = driver.find_elements(By.CLASS_NAME, 'change-wrap')
-        for element in elements:
-            print(element.text)      
-        a2 = re.findall("\d+\.\d+|\-\d+\.\d", element.text)[1]
-        print (a2)   
-                  
-         
-        elements = driver.find_elements(By.CLASS_NAME, 'kke_menus_tab_normal') 
-        for element in elements:
-            print(element.text)
-        print('MA5',elements[3].text)
-        elements[3].click()
-        
-        time.sleep(1)
-
-        a_list = []                                    
-        elements = driver.find_elements(By.XPATH, "//span[@style='float:left;min-width:80px;margin-right:11px;color:#FC9CB8']")
-        for element in elements:
-            a_list.append(element.text)
-        a3 = re.findall("\d+\.\d+|\-\d+\.\d", a_list[0])[0]
-        
-        time.sleep(1)
-        b_list = []                                    
-        elements = driver.find_elements(By.XPATH, "//span[@style='float:left;min-width:80px;margin-right:11px;color:#EE2F72']")
-        for element in elements:
-            b_list.append(element.text)
-        a4 = re.findall("\d+\.\d+|\-\d+\.\d", b_list[0])[0]
             
+    elements = driver.find_elements(By.CLASS_NAME, 'real-price')
+    for element in elements:
+        print(element.text)     
+    a1 = element.text
+    print (a1)
+    elements = driver.find_elements(By.CLASS_NAME, 'change-wrap')
+    for element in elements:
+        print(element.text)      
+    a2 = re.findall("\d+\.\d+|\-\d+\.\d", element.text)[1]
+    print (a2)   
+              
+     
+    elements = driver.find_elements(By.CLASS_NAME, 'kke_menus_tab_normal') 
+    for element in elements:
+        print(element.text)
+    print('MA5',elements[3].text)
+    elements[3].click()
+    
+    time.sleep(1)
 
-        # a_list = []                                    
-        # elements = driver.find_elements(By.XPATH, "//div[@style='margin-left: 55px;']")
-        # for element in elements:
-        #     a_list.append(element.text)
-        # a3 = re.findall("\d+\.\d+|\-\d+\.\d", a_list[0])[0]
-        # a4 = re.findall("\d+\.\d+|\-\d+\.\d", a_list[0])[2]   
+    a_list = []                                    
+    elements = driver.find_elements(By.XPATH, "//span[@style='float:left;min-width:80px;margin-right:11px;color:#FC9CB8']")
+    for element in elements:
+        a_list.append(element.text)
+    a3 = re.findall("\d+\.\d+|\-\d+\.\d", a_list[0])[0]
+    
+    time.sleep(1)
+    b_list = []                                    
+    elements = driver.find_elements(By.XPATH, "//span[@style='float:left;min-width:80px;margin-right:11px;color:#EE2F72']")
+    for element in elements:
+        b_list.append(element.text)
+    a4 = re.findall("\d+\.\d+|\-\d+\.\d", b_list[0])[0]
+        
+
+    # a_list = []                                    
+    # elements = driver.find_elements(By.XPATH, "//div[@style='margin-left: 55px;']")
+    # for element in elements:
+    #     a_list.append(element.text)
+    # a3 = re.findall("\d+\.\d+|\-\d+\.\d", a_list[0])[0]
+    # a4 = re.findall("\d+\.\d+|\-\d+\.\d", a_list[0])[2]   
  
-        dic = dict(code=mission,price= a1, pct =a2 ,ma5 =a3 ,ma20 =a4 )
-            
-        futuredata.append(dic)
-        print (futuredata)
+    dic = dict(code=mission,price= a1, pct =a2 ,ma5 =a3 ,ma20 =a4 )
+        
+    futuredata.append(dic)
+    print (futuredata)
+
+
+@app.route("/")
+def hello_world():
 
     return json.dumps(futuredata)
 
