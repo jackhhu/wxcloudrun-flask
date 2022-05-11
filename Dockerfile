@@ -80,22 +80,22 @@ RUN apk add py3-numpy
 RUN apk add py3-pandas
 # RUN pip install --reinstall gcc
 # RUN pip install cffi 
-RUN apk add chromium
-RUN apk add chromium-chromedriver
-RUN pip install tushare
+# RUN apk add chromium
+# RUN apk add chromium-chromedriver
+RUN pip install akshare
 
 # RUN pip install os
 # RUN apk add py3-selenium
 
-RUN apk add --no-cache gcc musl-dev
-RUN apk add --no-cache python3-dev
-RUN apk add --no-cache libffi-dev
-RUN pip install cffi 
-RUN pip install selenium
+# RUN apk add --no-cache gcc musl-dev
+# RUN apk add --no-cache python3-dev
+# RUN apk add --no-cache libffi-dev
+# RUN pip install cffi 
+# RUN pip install selenium
 
 
-RUN pip install requests
-RUN pip install chromedriver_autoinstaller
+# RUN pip install requests
+# RUN pip install chromedriver_autoinstaller
 RUN pip install --user -r requirements.txt
 
 # RUN apk add gcc 
