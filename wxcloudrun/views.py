@@ -52,7 +52,7 @@ def index():
         options = webdriver.ChromeOptions()
         options.add_argument('--no-sandbox')
         options.add_argument('--disable-extensions')
-#         options.add_argument('--headless')
+        options.add_argument('--headless')
         options.add_argument('--disable-gpu')
 
         driver = webdriver.Chrome(chrome_options=options)    
@@ -81,7 +81,7 @@ def index():
         print('MA5',elements[3].text)
         elements[3].click()
         
-        time.sleep(1)
+        time.sleep(5)
 
         a_list = []                                    
         elements = driver.find_elements(By.XPATH, "//span[@style='float:left;min-width:80px;margin-right:11px;color:#FC9CB8']")
@@ -89,7 +89,7 @@ def index():
             a_list.append(element.text)
         a3 = re.findall("\d+\.\d+|\-\d+\.\d", a_list[0])[0]
         
-        time.sleep(1)
+        time.sleep(5)
         b_list = []                                    
         elements = driver.find_elements(By.XPATH, "//span[@style='float:left;min-width:80px;margin-right:11px;color:#EE2F72']")
         for element in elements:
