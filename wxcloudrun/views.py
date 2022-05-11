@@ -5,7 +5,9 @@ from wxcloudrun.dao import delete_counterbyid, query_counterbyid, insert_counter
 from wxcloudrun.model import Counters
 from wxcloudrun.response import make_succ_empty_response, make_succ_response, make_err_response
 
+from flask import Flask
 import json
+import datetime
 import akshare as ak
 
 
@@ -33,17 +35,79 @@ import akshare as ak
 
 @app.route("/")
 def index():
-    futuredata=[]
+   futuredata=[]
     missions = ['ZC2209','RB2210','HC2210','J2209','JM2209','I2209','SF2209','SM2209',
-                'FG2209','SA2209','AU2206','AG2206','CU2206','AL2206','ZN2206','PB2206',
+                # 'FG2209','SA2209','AU2206','AG2206','CU2206','AL2206','ZN2206','PB2206',
                 ]
-    # missions = ['HC2210']
+    # missions = ['HC2210','SF2209']
+    daytradecodes = ['SF','SM','AP','LH','PK','CJ']
     data_df1 = ak.futures_zh_spot(symbol=",".join(missions), market="CF", adjust='0')
-    for i in range(data_df1.shape[0]):
-        dic = dict(code=data_df1['symbol'].iloc[i],price= data_df1['current_price'].iloc[i] )
+    data_df1['pct'] = (data_df1['current_price']/data_df1['last_settle_price']-1)*100
+
+    now = datetime.datetime.now()
+    d_time1 = datetime.datetime.strptime(str(datetime.datetime.now().date())+'8:59', '%Y-%m-%d%H:%M')
+    d_time2 =  datetime.datetime.strptime(str(datetime.datetime.now().date())+'15:00', '%Y-%m-%d%H:%M')
+    d_time3 = datetime.datetime.strptime(str(datetime.datetime.now().date())+'20:59', '%Y-%m-%d%H:%M')
+
+    i=0
+    for mission in missions:
+        futures_zh_daily_sina_df = ak.futures_zh_daily_sina(symbol=mission)         
+        if (mission[:2] in daytradecodes):
+            if ((now < d_time1) or (now > d_time2)):
+                list_5 = futures_zh_daily_sina_df['close'].iloc[-5:]
+                current_ma5 = list_5.mean()                
+                list_20 = futures_zh_daily_sina_df['close'].iloc[-20:]
+                current_ma20 = list_20.mean()       
+                a1 = (current_ma5/current_ma20 - 1)*100
+                a2 = (data_df1['current_price'].iloc[i]/current_ma20 - 1)*100 
+            else:                        
+                list_5 = futures_zh_daily_sina_df['close'].iloc[-4:]
+                list_5[list_5.index[-1]+1] = data_df1['current_price'].iloc[i]
+                current_ma5 = list_5.mean()
+                                
+                list_20 = futures_zh_daily_sina_df['close'].iloc[-19:]
+                list_20[list_20.index[-1]+1] = data_df1['current_price'].iloc[i]
+                current_ma20 = list_20.mean()
+        
+                a1 = (current_ma5/current_ma20 - 1)*100
+                a2 = (data_df1['current_price'].iloc[i]/current_ma20 - 1)*100                 
+        else:
+            if ((now > d_time2) and (now < d_time3)):
+                list_5 = futures_zh_daily_sina_df['close'].iloc[-5:]
+                current_ma5 = list_5.mean()                
+                list_20 = futures_zh_daily_sina_df['close'].iloc[-20:]
+                current_ma20 = list_20.mean()       
+                a1 = (current_ma5/current_ma20 - 1)*100
+                a2 = (data_df1['current_price'].iloc[i]/current_ma20 - 1)*100                
+            else:
+                list_5 = futures_zh_daily_sina_df['close'].iloc[-4:]
+                list_5[list_5.index[-1]+1] = data_df1['current_price'].iloc[i]
+                current_ma5 = list_5.mean()
+                
+                list_20 = futures_zh_daily_sina_df['close'].iloc[-19:]
+                list_20[list_20.index[-1]+1] = data_df1['current_price'].iloc[i]
+                current_ma20 = list_20.mean()
+        
+                a1 = (current_ma5/current_ma20 - 1)*100
+                a2 = (data_df1['current_price'].iloc[i]/current_ma20 - 1)*100         
+
+        
+
+ 
+    # for i in range(data_df1.shape[0]):
+        dic = dict(code=data_df1['symbol'].iloc[i],
+                   price= data_df1['current_price'].iloc[i],
+                   pct= round(data_df1['pct'].iloc[i],2),                  
+                   ma20= round(current_ma20,2),
+                   line1= round(a1,2),
+                   line2= round(a2,2),                 
+                   )
         futuredata.append(dic)
+        
+        i = i+1
     
     print (futuredata)
+
 
     return json.dumps(futuredata)
 
