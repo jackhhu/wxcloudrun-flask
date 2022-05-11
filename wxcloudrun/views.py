@@ -35,7 +35,7 @@ import akshare as ak
 
 @app.route("/")
 def index():
-   futuredata=[]
+    futuredata=[]
     missions = ['ZC2209','RB2210','HC2210','J2209','JM2209','I2209','SF2209','SM2209',
                 # 'FG2209','SA2209','AU2206','AG2206','CU2206','AL2206','ZN2206','PB2206',
                 ]
@@ -107,7 +107,6 @@ def index():
         i = i+1
     
     print (futuredata)
-
 
     return json.dumps(futuredata)
 
