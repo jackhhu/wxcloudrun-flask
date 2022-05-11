@@ -112,7 +112,7 @@ for mission in missions:
 
 
 @app.route("/")
-def hello_world():
+def index():
 
     return json.dumps(futuredata)
 
