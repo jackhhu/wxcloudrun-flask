@@ -31,31 +31,21 @@ from wxcloudrun.response import make_succ_empty_response, make_succ_response, ma
 from bs4 import BeautifulSoup
 from selenium import webdriver
 import chromedriver_autoinstaller
-from selenium.webdriver.chrome.options import Options 
 import json
 import re
+import time
 
 @app.route("/")
 def index():
     futuredata=[]
-    missions = ['HC2210','J2209']
+    missions = ['RB2210','HC2210','J2209','JM2209','I2209']
+    # missions = ['HC2210']
     
     chromedriver_autoinstaller.install()
     
-    
-    
     for mission in missions:
-        url = 'https://finance.sina.com.cn/futures/quotes/'+ mission +'.shtml'
+        url = 'https://finance.sina.com.cn/futures/quotes/'+ mission +'.shtml'    
     
-    # urls =[
-    #         'https://finance.sina.com.cn/futures/quotes/RB2210.shtml',
-    #         'https://finance.sina.com.cn/futures/quotes/HC2210.shtml',
-    #        # 'https://finance.sina.com.cn/futures/quotes/I2209.shtml',
-    #        # 'https://finance.sina.com.cn/futures/quotes/J2209.shtml',
-    #        # 'https://finance.sina.com.cn/futures/quotes/JM2209.shtml',  
-    #        ]
-        
-    # for url in urls:
 
         options = webdriver.ChromeOptions()
         options.add_argument('--no-sandbox')
@@ -63,36 +53,60 @@ def index():
         options.add_argument('--headless')
         options.add_argument('--disable-gpu')
 
-        driver = webdriver.Chrome(chrome_options=options)
-#         driver = webdriver.Chrome()
+        driver = webdriver.Chrome(chrome_options=options)    
+    
+
+        driver.implicitly_wait(10)
+        
         driver.get(url)
-#         time.sleep(10) #这是为了让网页能够完全加载出来
-        res = driver.page_source
-        driver.close()
-        soup = BeautifulSoup(res, "html.parser")
-        news = soup.find_all('td',attrs = {"rowspan":"4"})
-        # news = soup.find_all('span',attrs = {"style":"float:left;min-width:80px;margin-right:11px;color:#FC9CB8"})
-        
-        df1 = []
-        df2 = []
-        dic={}
-        # for new in news:
-        #     df1.append(new.text.strip().replace("\n","").replace("\r","").replace("\xa0","").replace("\t","")[0:22])         
-        
-        for new in news:
-            df1.append(new.text)
-        try: 
-            df2.append(df1[0]) 
-            a1 = re.findall("\d+\.\d+|\-\d+\.\d", df2[0])[0]
-            a2 = re.findall("\d+\.\d+|\-\d+\.\d", df2[0])[1]
-            a3 = re.findall("\d+\.\d+|\-\d+\.\d", df2[0])[2]
-            
-            dic = dict(code=mission,price= a1,change =a2 ,pct =a3 )
+
                 
-            futuredata.append(dic)
-            print (futuredata)
-        except:
-            print('无数据')
+        elements = driver.find_elements(By.CLASS_NAME, 'real-price')
+        for element in elements:
+            print(element.text)     
+        a1 = element.text
+        print (a1)
+        elements = driver.find_elements(By.CLASS_NAME, 'change-wrap')
+        for element in elements:
+            print(element.text)      
+        a2 = re.findall("\d+\.\d+|\-\d+\.\d", element.text)[1]
+        print (a2)   
+                  
+         
+        elements = driver.find_elements(By.CLASS_NAME, 'kke_menus_tab_normal') 
+        for element in elements:
+            print(element.text)
+        print('MA5',elements[3].text)
+        elements[3].click()
+        
+        time.sleep(1)
+
+        a_list = []                                    
+        elements = driver.find_elements(By.XPATH, "//span[@style='float:left;min-width:80px;margin-right:11px;color:#FC9CB8']")
+        for element in elements:
+            a_list.append(element.text)
+        a3 = re.findall("\d+\.\d+|\-\d+\.\d", a_list[0])[0]
+        
+        time.sleep(1)
+        b_list = []                                    
+        elements = driver.find_elements(By.XPATH, "//span[@style='float:left;min-width:80px;margin-right:11px;color:#EE2F72']")
+        for element in elements:
+            b_list.append(element.text)
+        a4 = re.findall("\d+\.\d+|\-\d+\.\d", b_list[0])[0]
+            
+
+        # a_list = []                                    
+        # elements = driver.find_elements(By.XPATH, "//div[@style='margin-left: 55px;']")
+        # for element in elements:
+        #     a_list.append(element.text)
+        # a3 = re.findall("\d+\.\d+|\-\d+\.\d", a_list[0])[0]
+        # a4 = re.findall("\d+\.\d+|\-\d+\.\d", a_list[0])[2]   
+ 
+        dic = dict(code=mission,price= a1, pct =a2 ,ma5 =a3 ,ma20 =a4 )
+            
+        futuredata.append(dic)
+        print (futuredata)
+
     return json.dumps(futuredata)
 
 
