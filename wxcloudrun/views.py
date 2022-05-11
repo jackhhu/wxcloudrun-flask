@@ -39,8 +39,8 @@ import time
 app = Flask(__name__)
 
 futuredata=[]
-missions = ['RB2210','HC2210','J2209','JM2209','I2209']
-# missions = ['HC2210']
+# missions = ['RB2210','HC2210','J2209','JM2209','I2209']
+missions = ['HC2210']
 
 chromedriver_autoinstaller.install()
 
