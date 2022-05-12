@@ -9,6 +9,9 @@ from flask import Flask
 import json
 import datetime
 import akshare as ak
+import time
+import re
+from datetime import timedelta
 
 
 # import tushare as ts 
@@ -36,13 +39,21 @@ import akshare as ak
 @app.route("/")
 def index():
     futuredata=[]
-    missions = ['ZC2209','RB2210','HC2210','J2209','JM2209','I2209','SF2209','SM2209',
+    # 内盘数据
+    missions = ['ZC2209','RB2210','HC2210','J2209','JM2209','I2209','SM2209','SF2209',
                 'FG2209','SA2209','AU2206','AG2206','CU2206','AL2206','ZN2206','PB2206',
-                'NI2206','SS2206','BU2206','FU2209','TA2209','EG2209','C2209','Y2209',
+                'NI2206','SS2206','BU2206','FU2209','MA2209','PF2209','TA2209','EG2209','PP2209',
+                'V2209','L2209','UR2209','Y2209','A2209','M2209','Y2209','C2209','CS2209',
+                'RM2209','OI2209','P2209','AP2210','JD2209','SR2209','CF2209','CY2209',
+                'RU2209','LH2209','PK2210',
                 ]
-    # missions = ['HC2210','SF2209']
-    daytradecodes = ['SF','SM','AP','LH','PK','CJ']
+    # missions = ['HC2210','SF2209','ZC2209','RB2210']
+    daytradecodes = ['SF','SM','AP','LH','PK','CJ','JD']
     data_df1 = ak.futures_zh_spot(symbol=",".join(missions), market="CF", adjust='0')
+
+    # data_df1 = ak.futures_main_sina(symbol="RB0", start_date="20220501", end_date="20220512")
+
+
     data_df1['pct'] = (data_df1['current_price']/data_df1['last_settle_price']-1)*100
 
     now = datetime.datetime.now()
@@ -93,21 +104,105 @@ def index():
                 a2 = (data_df1['current_price'].iloc[i]/current_ma20 - 1)*100         
 
         
-
- 
-    # for i in range(data_df1.shape[0]):
         dic = dict(code=data_df1['symbol'].iloc[i],
                    price= data_df1['current_price'].iloc[i],
-                   pct= round(data_df1['pct'].iloc[i],2),                  
+                   pct= round(data_df1['pct'].iloc[i],1),                  
                    ma20= round(current_ma20,2),
-                   line1= round(a1,2),
-                   line2= round(a2,2),                 
+                   line1= round(a1,1),
+                   line2= round(a2,1),                 
                    )
         futuredata.append(dic)
-        
+  
+        dic4 = dict(ma20_code1 = data_df1['symbol'].iloc[i],
+                   ma20_1 = round(current_ma20*1.0025,1),
+                   ma20_2 = round(current_ma20*1.005,1),
+                   ma20_3 = round(current_ma20*1.0075,1),
+                   ma20_4 = round(current_ma20*1.01,1),      
+                   )
+        futuredata.append(dic4)
+
+        dic5 = dict(ma20_code2 = data_df1['symbol'].iloc[i],   
+                   ma20_5 = round(current_ma20*0.9975,1),
+                   ma20_6 = round(current_ma20*0.995,1),
+                   ma20_7 = round(current_ma20*0.9925,1),
+                   ma20_8 = round(current_ma20*0.99,1),    
+                   )
+        futuredata.append(dic5)
+      
         i = i+1
+
+    # 外盘数据
+    missions1 = ['GC','SI','CAD','AHD','ZSD','PBD','NID','SND',
+                 'OIL','NG','S','SM','BO','C','FCPO','TRB',
+                ]
     
-    print (futuredata)
+    # print("开始接收实时行情, 每 3 秒刷新一次")
+    # subscribe_list = ak.futures_foreign_commodity_subscribe_exchange_symbol()
+    # while True:
+    #     time.sleep(3)
+    #     futures_foreign_commodity_realtime_df = ak.futures_foreign_commodity_realtime(subscribe_list=subscribe_list)
+    #     print(futures_foreign_commodity_realtime_df)
+    
+    
+
+
+    for mission in missions1: 
+        futures_foreign_hist_df = ak.futures_foreign_hist(symbol=mission)
+        pct_a1 =  ((futures_foreign_hist_df['close'].iloc[-1]/futures_foreign_hist_df['close'].iloc[-2])-1)*100
+        list_5 = futures_foreign_hist_df['close'].iloc[-5:]
+        current_ma5 = list_5.mean() 
+        list_20 = futures_foreign_hist_df['close'].iloc[-20:]
+        current_ma20 = list_20.mean() 
+        a1 = (current_ma5/current_ma20 - 1)*100
+        a2 = (futures_foreign_hist_df['close'].iloc[-1]/current_ma20 - 1)*100         
+        # print (mission,futures_foreign_hist_df['close'].iloc[-1],pct_a1,current_ma20,a1,a2)
+        # print (type(futures_foreign_hist_df['close'].iloc[-1]),type(pct_a1),type(current_ma20),type(a1),type(a2))
+        
+        dic6 = dict(code=mission,
+                   price= futures_foreign_hist_df['close'].iloc[-1].astype('float'),
+                   pct= round(pct_a1,1),                  
+                   ma20= round(current_ma20,1),
+                   line1= round(a1,1),
+                   line2= round(a2,1),                 
+                   )
+        futuredata.append(dic6)
+
+
+    
+    # # 新闻联播
+    # d_time4 = datetime.datetime.strptime(str(datetime.datetime.now().date())+'20:00', '%Y-%m-%d%H:%M')
+    # if now < d_time4:
+    #     cctv_day = datetime.datetime.now().date() - timedelta(days=1)
+    # else:
+    #     cctv_day = datetime.datetime.now().date()
+        
+    # data_df2 = ak.news_cctv(date=str(cctv_day.strftime('%Y%m%d')))
+    
+   
+    # for i in range(data_df2.shape[0]):
+    #     dic1 = dict(num = i+1,
+    #                 title =data_df2['title'].iloc[i]              
+    #                 )                
+    #     futuredata.append(dic1)
+        
+    # mystr = data_df2[data_df2['title']=='国内联播快讯']['content'].iloc[0]
+    # list_b = re.split(r'。', mystr)
+    # list_b.remove("")
+    # for i in range(len(list_b)):
+    #     dic2 = dict(num = i+1,
+    #                 title = list_b[i]              
+    #                 )                
+    #     futuredata.append(dic2)              
+              
+
+    # 实时新闻
+    data_df3 = ak.js_news(timestamp=now)
+    for i in range(data_df3.shape[0]):
+        dic3 = dict(datetime =data_df3['datetime'].iloc[i][-8:],
+                    content =data_df3['content'].iloc[i]              
+                   )                
+        futuredata.append(dic3)    
+ 
 
     return json.dumps(futuredata)
 
