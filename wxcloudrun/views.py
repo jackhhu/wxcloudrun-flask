@@ -106,15 +106,15 @@ def index():
         
         dic = dict(code=data_df1['symbol'].iloc[i],
                    price= data_df1['current_price'].iloc[i],
-                   pct= round(data_df1['pct'].iloc[i],1),                  
-                   ma20= round(current_ma20,2),
-                   line1= round(a1,1),
-                   line2= round(a2,1),                 
+                   pct= round(data_df1['pct'].iloc[i],2),                  
+                   ma20= round(current_ma20,1),
+                   line1= round(a1,2),
+                   line2= round(a2,2),                 
                    )
         futuredata.append(dic)
   
         dic4 = dict(ma20_code1 = data_df1['symbol'].iloc[i],
-                   ma20_1 = round(current_ma20*1.0025,1),
+                   ma20_1 = round(current_ma20*1.0025,),
                    ma20_2 = round(current_ma20*1.005,1),
                    ma20_3 = round(current_ma20*1.0075,1),
                    ma20_4 = round(current_ma20*1.01,1),      
@@ -138,11 +138,16 @@ def index():
                        line1_alert= round(a1,2),
                        line2_alert= round(a2,2),   
                        )
-            futuredata.append(dic7)   
-        
-        
-        
+            futuredata.append(dic7)            
+            
+ 
+    
         i = i+1
+
+
+
+
+
 
     # 外盘数据
     missions1 = ['GC','SI','CAD','AHD','ZSD','PBD','NID','SND',
@@ -209,14 +214,13 @@ def index():
               
 
     # 实时新闻
-#     data_df3 = ak.js_news(timestamp=now)
-    data_df3 = ak.js_news(timestamp=now + timedelta(hours=8)- timedelta(minutes=1))
+    data_df3 = ak.js_news(timestamp=now)
+    # data_df3 = ak.js_news(timestamp=now + timedelta(hours=8)- timedelta(minutes=1))
     for i in range(data_df3.shape[0]-1,0,-1):
         dic3 = dict(datetime =data_df3['datetime'].iloc[i][-8:],
                     content =data_df3['content'].iloc[i]              
                    )                
         futuredata.append(dic3)    
- 
  
 
     return json.dumps(futuredata)
