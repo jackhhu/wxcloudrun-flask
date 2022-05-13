@@ -214,8 +214,8 @@ def index():
               
 
     # 实时新闻
-    data_df3 = ak.js_news(timestamp=now)
-    # data_df3 = ak.js_news(timestamp=now + timedelta(hours=8)- timedelta(minutes=1))
+#     data_df3 = ak.js_news(timestamp=now)
+    data_df3 = ak.js_news(timestamp=now + timedelta(hours=8)- timedelta(minutes=1))
     for i in range(data_df3.shape[0]-1,0,-1):
         dic3 = dict(datetime =data_df3['datetime'].iloc[i][-8:],
                     content =data_df3['content'].iloc[i]              
