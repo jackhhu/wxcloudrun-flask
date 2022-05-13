@@ -43,7 +43,7 @@ def index():
     missions = ['ZC2209','RB2210','HC2210','J2209','JM2209','I2209','SM2209','SF2209',
                 'FG2209','SA2209','AU2206','AG2206','CU2206','AL2206','ZN2206','PB2206',
                 'NI2206','SS2206','BU2206','FU2209','MA2209','PF2209','TA2209','EG2209','PP2209',
-                'V2209','L2209','UR2209','Y2209','A2209','M2209','Y2209','C2209','CS2209',
+                'V2209','L2209','UR2209','Y2209','A2209','M2209','C2209','CS2209',
                 'RM2209','OI2209','P2209','AP2210','JD2209','SR2209','CF2209','CY2209',
                 'RU2209','LH2209','PK2210',
                 ]
@@ -128,7 +128,20 @@ def index():
                    ma20_8 = round(current_ma20*0.99,1),    
                    )
         futuredata.append(dic5)
-      
+
+        # 预警数据
+        if abs(a2)<2 :
+            dic7 = dict(code_alert = data_df1['symbol'].iloc[i],   
+                       price_alert= data_df1['current_price'].iloc[i],
+                       pct_alert= round(data_df1['pct'].iloc[i],2),                  
+                       ma20_alert= round(current_ma20,1),
+                       line1_alert= round(a1,2),
+                       line2_alert= round(a2,2),   
+                       )
+            futuredata.append(dic7)   
+        
+        
+        
         i = i+1
 
     # 外盘数据
